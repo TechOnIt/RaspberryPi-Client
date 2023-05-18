@@ -24,8 +24,6 @@ An open-source project for manage devices with [techonit panel](https://desk.tec
 BTC 
 `bc1qhw3rxcyexz6arxn2azxl459fkp85vq5a82d9s6`
 
-[Coffe bede]()
-
-<div style="text-align=center;">
-<a href="https://www.coffeebede.com/rezaamd"><img class="img-fluid" src="https://coffeebede.ir/DashboardTemplateV2/app-assets/images/banner/default-yellow.svg" /></a>
+<div align="center">
+<a href="https://www.coffeebede.com/rezaamd"><img class="img-fluid" src="https://coffeebede.ir/DashboardTemplateV2/app-assets/images/banner/default-yellow.svg" width="400" /></a>
 </div>
