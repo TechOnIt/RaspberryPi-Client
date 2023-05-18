@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities;
+﻿namespace TechOnIt.Domain.Entities;
 
 public class Device
 {
