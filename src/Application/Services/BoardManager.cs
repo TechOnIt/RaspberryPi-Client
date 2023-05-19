@@ -30,7 +30,7 @@ public class BoardManager : IBoardManager
         foreach (var device in devices)
         {
             GpioController controller = new GpioController();
-            if (controller.GetPinMode(device.Pin) != PinMode.Output)
+            if (!controller.IsPinOpen(device.Pin) || controller.GetPinMode(device.Pin) != PinMode.Output)
                 controller.OpenPin(device.Pin, PinMode.Output);
             _logger.LogInformation($"#{device.Pin} is {(device.IsHigh ? "High" : "Low")}");
             controller.Write(device.Pin, device.IsHigh ? PinValue.High : PinValue.Low);

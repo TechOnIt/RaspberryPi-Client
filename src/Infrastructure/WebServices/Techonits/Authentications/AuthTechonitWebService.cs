@@ -21,8 +21,8 @@ internal class AuthTechonitWebService : IAuthTechonitWebService
         var client = new RestClient(options);
         var request = new RestRequest("/v1/auth/signin", Method.Post);
         request.AddHeader("Content-Type", "application/json");
-        var body = new GetAccessTokenParameter(apiKey, password).ToString();
-        request.AddStringBody(body, DataFormat.Json);
+        var body = new GetAccessTokenParameter(apiKey, password);
+        request.AddStringBody(JsonSerializer.Serialize(body), DataFormat.Json);
         RestResponse response = await client.ExecuteAsync(request);
         StructureAccessToken? structureAccessToken = new();
         if (response.IsSuccessful)
