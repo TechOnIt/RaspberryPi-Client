@@ -9,9 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\Reza\.nuget\packages\rest.service\1.0.4\contentFiles\any\net5.0\favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Iot.Device.Bindings" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.5" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="System.Device.Gpio" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
