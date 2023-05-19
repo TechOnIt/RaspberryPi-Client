@@ -1,5 +1,3 @@
-using TechOnIt.Infrastructure.WebServices.Techonits;
-
 namespace TechOnIt.WorkerService;
 
 public class Program
@@ -9,8 +7,7 @@ public class Program
         IHost host = Host.CreateDefaultBuilder(args)
             .ConfigureServices(async (hostContext, services) =>
             {
-                services.AddCacheService(hostContext.Configuration);
-                services.AddTechonitService();
+                services.AddBoardManagerServices(hostContext.Configuration);
                 services.AddHostedService<Worker>();
             })
             .Build();

@@ -1,28 +1,29 @@
-using TechOnIt.Infrastructure.WebServices.Techonits;
+namespace TechOnIt.WorkerService;
 
-namespace TechOnIt.WorkerService
+public class Worker : BackgroundService
 {
-    public class Worker : BackgroundService
+    #region DI
+    private readonly ILogger<Worker> _logger;
+    private readonly IBoardManager _boardManager;
+    public Worker(ILogger<Worker> logger,
+        IBoardManager boardManager)
     {
-        private readonly ILogger<Worker> _logger;
-        private readonly ITechonitWebService _techonitWebService;
+        _logger = logger;
+        _boardManager = boardManager;
+    }
+    #endregion
 
-        public Worker(ILogger<Worker> logger,
-            ITechonitWebService techonitWebService)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+
+        while (!stoppingToken.IsCancellationRequested)
         {
-            _logger = logger;
-            _techonitWebService = techonitWebService;
-        }
+            await _boardManager
+                .WithIdentity(apiKey: "Ba94QfKlm9k1vR3u", password: "123456")
+                .StartNowAsync(stoppingToken);
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            await _techonitWebService.Auth.GetAccessTokenAsync("Ba94QfKlm9k1vR3u", "123456", stoppingToken);
-
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
-            }
+            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+            await Task.Delay(5000, stoppingToken);
         }
     }
 }

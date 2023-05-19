@@ -1,1 +1,2 @@
-﻿global using TechOnIt.Infrastructure;
+﻿global using TechOnIt.Application;
+global using TechOnIt.Application.Services;
