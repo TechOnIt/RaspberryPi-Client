@@ -25,7 +25,7 @@ public class BoardManager : IBoardManager
         var accessToken = await _techonitWebService.Auth.GetAccessTokenAsync(ApiKey, Password, stoppingToken);
         if (accessToken != null)
             Console.WriteLine(accessToken.Token);
-        var devices = await _techonitWebService.Device.GetDevicesAsync(stoppingToken);
+        var devices = await _techonitWebService.Device.GetDevicesAsync(accessToken.Token,stoppingToken);
         _logger.LogInformation($"{devices.Count} devices founded.");
         foreach (var device in devices)
         {

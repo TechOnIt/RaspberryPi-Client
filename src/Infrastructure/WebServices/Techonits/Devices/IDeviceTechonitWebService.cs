@@ -2,5 +2,5 @@
 
 public interface IDeviceTechonitWebService
 {
-    public Task<List<Device>> GetDevicesAsync(CancellationToken stoppingToken);
+    public Task<List<Device>> GetDevicesAsync(string token, CancellationToken stoppingToken);
 }
