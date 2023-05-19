@@ -15,11 +15,11 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var boardManager = _boardManager
+                .WithIdentity(apiKey: "Ba94QfKlm9k1vR3u", password: "123456");
         while (!stoppingToken.IsCancellationRequested)
         {
-            await _boardManager
-                .WithIdentity(apiKey: "Ba94QfKlm9k1vR3u", password: "123456")
-                .StartNowAsync(stoppingToken);
+            await boardManager.StartNowAsync(stoppingToken);
 
             _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             await Task.Delay(5000, stoppingToken);
