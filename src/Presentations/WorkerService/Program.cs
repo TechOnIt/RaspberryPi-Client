@@ -7,6 +7,7 @@ public class Program
         IHost host = Host.CreateDefaultBuilder(args)
             .ConfigureServices(async (hostContext, services) =>
             {
+                services.AddMemoryCache();
                 services.AddBoardManagerServices(hostContext.Configuration);
                 services.AddHostedService<Worker>();
             })

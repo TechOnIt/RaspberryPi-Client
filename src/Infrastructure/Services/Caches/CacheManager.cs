@@ -1,22 +1,22 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace TechOnIt.Infrastructure.Services.Caches;
 
 public class CacheManager : ICacheManager
 {
     #region Props & Ctor
-    private readonly IDistributedCache _distributedCache;
     private readonly ILogger<CacheManager> _logger;
-
-    public CacheManager(IDistributedCache distributedCache,
+    private readonly IMemoryCache _memoryCache;
+    public CacheManager(IMemoryCache memoryCache,
         ILogger<CacheManager> logger)
     {
-        _distributedCache = distributedCache;
+        _memoryCache = memoryCache;
         _logger = logger;
     }
     #endregion
 
-    public async Task<bool> SetAsync<TValue>(string key, TValue value, CancellationToken stoppingToken)
+    public bool Set<TValue>(string key, TValue value, DateTimeOffset expirationTime)
     {
         // Validate key.
         if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
@@ -29,7 +29,7 @@ public class CacheManager : ICacheManager
             // Serialize value to string.
             string serializedValue = JsonSerializer.Serialize(value);
             // Store serialized value object.
-            await _distributedCache.SetStringAsync(key, serializedValue, stoppingToken);
+            _memoryCache.Set(key, serializedValue, expirationTime);
             return true;
         }
         catch (Exception ex)
@@ -39,7 +39,7 @@ public class CacheManager : ICacheManager
         return false;
     }
 
-    public async Task<TValue?> GetAsync<TValue>(string key, CancellationToken stoppingToken)
+    public TValue? Get<TValue>(string key)
     {
         // Validate key.
         if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
@@ -50,10 +50,7 @@ public class CacheManager : ICacheManager
         try
         {
             // Find cache instance by key.
-            string? cacheString = await _distributedCache.GetStringAsync(key);
-            if (string.IsNullOrEmpty(cacheString))
-                return default;
-            return JsonSerializer.Deserialize<TValue>(cacheString);
+            return _memoryCache.Get<TValue>(key);
         }
         catch (Exception ex)
         {
