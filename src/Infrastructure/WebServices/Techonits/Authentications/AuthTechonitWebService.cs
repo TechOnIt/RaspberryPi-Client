@@ -1,9 +1,31 @@
-﻿namespace TechOnIt.Infrastructure.WebServices.Techonits.Authentications;
+﻿using RestSharp;
+using TechOnIt.Infrastructure.WebServices.Techonits.Devices.RequestModel;
 
-public class AuthTechonitWebService : IAuthTechonitWebService
+namespace TechOnIt.Infrastructure.WebServices.Techonits.Authentications;
+
+internal class AuthTechonitWebService : IAuthTechonitWebService
 {
-    public async Task GetAccessTokenAsync(string apiKey, string password, CancellationToken stoppingToken)
+    public async Task<StructureAccessToken?> GetAccessTokenAsync(string apiKey, string password, CancellationToken stoppingToken = default)
     {
-        await Console.Out.WriteLineAsync("Request for token.");
+
+        var options = new RestClientOptions("https://localhost:7059")
+        {
+            MaxTimeout = -1,
+        };
+        var client = new RestClient(options);
+        var request = new RestRequest("/v1/auth/signin", Method.Post);
+        request.AddHeader("Content-Type", "application/json");
+        var body = new GetAccessTokenParameter(apiKey, password).ToString();
+        request.AddStringBody(body, DataFormat.Json);
+        RestResponse response = await client.ExecuteAsync(request);
+        StructureAccessToken? structureAccessToken = new();
+        if (response.IsSuccessful)
+        {
+            structureAccessToken = JsonSerializer.Deserialize<StructureAccessToken>(response.Content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+        }
+        return structureAccessToken;
     }
 }
