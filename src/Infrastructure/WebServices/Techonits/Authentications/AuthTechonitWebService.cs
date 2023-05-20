@@ -22,7 +22,7 @@ internal class AuthTechonitWebService : IAuthTechonitWebService
         if (structureAccessToken is not null)
             return structureAccessToken;
 
-        var options = new RestClientOptions("https://core.techonit.org")
+        var options = new RestClientOptions("http://192.168.1.82")
         {
             MaxTimeout = -1,
         };
