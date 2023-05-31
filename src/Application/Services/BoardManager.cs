@@ -22,18 +22,22 @@ public class BoardManager : IBoardManager
 
     public async Task<BoardManager> StartNowAsync(CancellationToken stoppingToken = default)
     {
+        // Get access token from api.
         var accessToken = await _techonitWebService.Auth.GetAccessTokenAsync(ApiKey, Password, stoppingToken);
         if (accessToken != null)
-            Console.WriteLine(accessToken.Token);
+            _logger.LogDebug(accessToken.Token);
+        if (accessToken is null)
+            return this;
+        // Get All devicesfrom api.
         var devices = await _techonitWebService.Device.GetDevicesAsync(accessToken.Token,stoppingToken);
         _logger.LogInformation($"{devices.Count} devices founded.");
         foreach (var device in devices)
         {
-            GpioController controller = new GpioController();
-            if (!controller.IsPinOpen(device.Pin) || controller.GetPinMode(device.Pin) != PinMode.Output)
-                controller.OpenPin(device.Pin, PinMode.Output);
+            //GpioController controller = new GpioController();
+            //if (!controller.IsPinOpen(device.Pin) || controller.GetPinMode(device.Pin) != PinMode.Output)
+            //    controller.OpenPin(device.Pin, PinMode.Output);
             _logger.LogInformation($"#{device.Pin} is {(device.IsHigh ? "High" : "Low")}");
-            controller.Write(device.Pin, device.IsHigh ? PinValue.High : PinValue.Low);
+            //controller.Write(device.Pin, device.IsHigh ? PinValue.High : PinValue.Low);
         }
         return this;
     }

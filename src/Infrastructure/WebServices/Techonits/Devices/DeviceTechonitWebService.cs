@@ -6,7 +6,7 @@ internal class DeviceTechonitWebService : IDeviceTechonitWebService
 {
     public async Task<List<Device>> GetDevicesAsync(string token, CancellationToken stoppingToken)
     {
-        var options = new RestClientOptions("http://192.168.1.82")
+        var options = new RestClientOptions("https://board.techonit.org/")
         {
             MaxTimeout = -1,
         };

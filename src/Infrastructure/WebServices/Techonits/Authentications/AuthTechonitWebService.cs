@@ -22,7 +22,7 @@ internal class AuthTechonitWebService : IAuthTechonitWebService
         if (structureAccessToken is not null)
             return structureAccessToken;
 
-        var options = new RestClientOptions("http://192.168.1.82")
+        var options = new RestClientOptions("https://board.techonit.org/")
         {
             MaxTimeout = -1,
         };
@@ -40,13 +40,14 @@ internal class AuthTechonitWebService : IAuthTechonitWebService
             });
             if(structureAccessToken is not null)
             {
-                bool isCacheStoreSucceded = _cacheManager.Set("AccessToken", structureAccessToken, DateTimeOffset.Now.AddMinutes(20));
+                DateTime tokenExpirationforCache = DateTime.Parse(structureAccessToken.TokenExpireAt).AddMinutes(-1);
+                bool isCacheStoreSucceded = _cacheManager.Set("AccessToken", structureAccessToken, tokenExpirationforCache);
                 if(isCacheStoreSucceded == false)
                     _logger.LogWarning("Cache store on AccessToken failed.");
             }
         }
         else
-            _logger.LogError("auth/signin is failed.");
+            _logger.LogError("auth/signin is failed. \n" + response.ErrorMessage);
         return structureAccessToken;
     }
 }

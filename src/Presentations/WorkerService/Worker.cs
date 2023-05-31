@@ -21,7 +21,7 @@ public class Worker : BackgroundService
         {
             await boardManager.StartNowAsync(stoppingToken);
 
-            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+            //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             await Task.Delay(5000, stoppingToken);
         }
     }
